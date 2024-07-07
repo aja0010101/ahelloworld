@@ -5,19 +5,21 @@
 # /etc/config/wireless.ap-only
 #
  
-TIMEOUT=30
-SLEEP=3
 sta_err=0
- 
-while [ $(iwinfo | grep -c "ESSID: unknown") -ge 1 ]; do
-   let sta_err=$sta_err+1
-   if [ $((sta_err * SLEEP)) -ge $TIMEOUT ]; then
-     cp /etc/config/wireless.ap-only /etc/config/wireless
-     wifi up
-#    uncomment the following lines to try AP+STA after reboot
-#    sleep 3
-#    cp /etc/config/wireless.ap+sta /etc/config/wireless
-     break
-   fi
-   sleep $SLEEP
+i=15
+until [ "$sta_err" -ge 8 ] || [ "$i" -le 0 ]
+do
+    if [ $(iwinfo | grep -c "ESSID: unknown") -ge 1 ]; then
+        sta_err=$((sta_err+1))
+    fi
+    
+    if [ "$sta_err" -ge 8 ]; then
+        cp /etc/config/wireless.ap-only /etc/config/wireless
+        sleep 1
+        wifi up
+        sleep 2
+    fi
+    
+    i=$((i-1))
+    sleep 1
 done
