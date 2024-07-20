@@ -122,6 +122,8 @@
 			resets = <&rst 5>;
 			reset-names = "usb-host";
 
+			has-transaction-translator;
+
 			phy-names = "usb-phy";
 			phys = <&usb_phy>;
 
