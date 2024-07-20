@@ -115,15 +115,12 @@
 		};
 
 		usb: usb@1b000000 {
-			compatible = "generic-ehci";
+			compatible = "qca,ar7100-ehci", "generic-ehci";
 			reg = <0x1b000000 0x200>;
 
 			interrupts = <3>;
 			resets = <&rst 5>;
 			reset-names = "usb-host";
-
-			has-transaction-translator;
-			caps-offset = <0x100>;
 
 			phy-names = "usb-phy";
 			phys = <&usb_phy>;
