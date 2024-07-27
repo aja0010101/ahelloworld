@@ -2,7 +2,7 @@
 
 set -e
 
-if [ ! -f /tmp/tailscaled ]; then
+if [ ! -f /usr/cbin/tailscaled ]; then
     arch=`uname -m`
     if [ "$arch" == "mips" ]; then
         endianness=`echo -n I | hexdump -o | awk '{ print (substr($2,6,1)=="1") ? "le" : ""; exit }'`
@@ -25,14 +25,14 @@ if [ ! -f /tmp/tailscaled ]; then
 
     echo "Downloading Tailscale ${version} .."
 
-    echo -e "tailscale_${version}/tailscaled" > /tmp/tailscale_${version}_files.txt
+    echo -e "tailscale_${version}/tailscaled" > /usr/cbin/tailscale_${version}_files.txt
 
-    wget -O- https://pkgs.tailscale.com/stable/tailscale_${version}.tgz | tar x -zvf - -C /tmp -T /tmp/tailscale_${version}_files.txt
+    wget -O- https://pkgs.tailscale.com/stable/tailscale_${version}.tgz | tar x -zvf - -C /usr/cbin -T /usr/cbin/tailscale_${version}_files.txt
 
-    mv /tmp/tailscale_$version/* /tmp
-    rm -rf /tmp/tailscale_${version}*
+    mv /usr/cbin/tailscale_$version/* /usr/cbin
+    rm -rf /usr/cbin/tailscale_${version}*
 
     echo "Done!"
 fi
 
-/tmp/tailscaled "$@"
+/usr/cbin/tailscaled "$@"
